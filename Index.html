@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MHT-CET Chemistry Practice Test (12th Std)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-800">
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md">
+        <div class="max-w-4xl mx-auto px-4 py-6 text-center">
+            <h1 class="text-2xl md:text-3xl font-bold">Maharashtra Board 12th Std Chemistry</h1>
+            <p class="text-indigo-200 mt-1">MHT-CET Concept-Oriented Practice Test (Easy Level - 30 Questions)</p>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        <!-- Student Info Screen -->
+        <div id="setup-screen" class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <h2 class="text-xl font-semibold text-slate-700 mb-4 border-b pb-2">Student Information</h2>
+            <form id="student-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Full Name</label>
+                    <input type="text" id="student-name" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Enter your name">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Roll Number</label>
+                    <input type="text" id="student-roll" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Enter your roll number">
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-lg transition-colors shadow">
+                    Start Test
+                </button>
+            </form>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden space-y-6">
+            <!-- Student Banner -->
+            <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-4 flex justify-between items-center text-sm font-medium text-indigo-900">
+                <span>Student: <strong id="display-name"></strong></span>
+                <span>Roll No: <strong id="display-roll"></strong></span>
+            </div>
+
+            <form id="quiz-form" class="space-y-6">
+                <div id="questions-container" class="space-y-6">
+                    <!-- Dynamic Questions Inserted Here -->
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3 rounded-lg transition-colors shadow">
+                    Submit Test & View Results
+                </button>
+            </form>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden bg-white rounded-xl shadow-lg p-6 md:p-8 space-y-6">
+            <div class="text-center border-b pb-6">
+                <h2 class="text-2xl font-bold text-slate-800">Test Submitted Successfully!</h2>
+                <p class="text-slate-600 mt-1">Here is your performance summary</p>
+                <div class="mt-4 inline-block bg-indigo-50 border border-indigo-200 px-6 py-3 rounded-xl">
+                    <span class="text-sm text-indigo-600 block font-medium">Your Score</span>
+                    <span id="score-display" class="text-3xl font-extrabold text-indigo-700">0 / 30</span>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-lg font-bold text-slate-700 mb-4">Detailed Answer Key & Explanations</h3>
+                <div id="answer-key-container" class="space-y-4">
+                    <!-- Dynamic Answer Key Inserted Here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const questionsData = [
+            {
+                id: 1,
+                chapter: "Solid State",
+                question: "Which of the following crystal systems has all sides equal and all angles equal to $90^\\circ$?",
+                options: [
+                    { text: "Cubic", correct: true },
+                    { text: "Tetragonal", correct: false },
+                    { text: "Orthorhombic", correct: false },
+                    { text: "Monoclinic", correct: false }
+                ],
+                explanation: "In a cubic crystal system, $a = b = c$ and $\\alpha = \\beta = \\gamma = 90^\\circ$."
+            },
+            {
+                id: 2,
+                chapter: "Solid State",
+                question: "The packing efficiency of atoms in a body-centered cubic (BCC) lattice is:",
+                options: [
+                    { text: "52.4%", correct: false },
+                    { text: "68.0%", correct: true },
+                    { text: "74.0%", correct: false },
+                    { text: "47.6%", correct: false }
+                ],
+                explanation: "BCC unit cell occupies 68% of the total space, whereas simple cubic is 52.4% and FCC/CCP is 74%."
+            },
+            {
+                id: 3,
+                chapter: "Solid State",
+                question: "Schottky defect is observed when:",
+                options: [
+                    { text: "An ion leaves its normal site and occupies an interstitial site", correct: false },
+                    { text: "Equal number of cations and anions are missing from the crystal lattice", correct: true },
+                    { text: "Density of the crystal increases", correct: false },
+                    { text: "Electrons are trapped in anion vacancies", correct: false }
+                ],
+                explanation: "Schottky defect is a vacancy defect caused by missing equal numbers of cations and anions, lowering density."
+            },
+            {
+                id: 4,
+                chapter: "Solution",
+                question: "Which of the following is a colligative property?",
+                options: [
+                    { text: "Refractive index", correct: false },
+                    { text: "Osmotic pressure", correct: true },
+                    { text: "Surface tension", correct: false },
+                    { text: "Viscosity", correct: false }
+                ],
+                explanation: "Osmotic pressure depends only on the number of solute particles, making it a colligative property."
+            },
+            {
+                id: 5,
+                chapter: "Solution",
+                question: "Relative lowering of vapour pressure is equal to:",
+                options: [
+                    { text: "Mole fraction of solvent", correct: false },
+                    { text: "Mole fraction of solute", correct: true },
+                    { text: "Molarity of solution", correct: false },
+                    { text: "Molality of solution", correct: false }
+                ],
+                explanation: "According to Raoult's law, relative lowering of vapour pressure is equal to the mole fraction of the non-volatile solute ($x_2 = \\frac{p_1^0 - p}{p_1^0}$). "
+            },
+            {
+                id: 6,
+                chapter: "Solution",
+                question: "Van't Hoff factor ($i$) for completely dissociated $\\text{NaCl}$ in water is:",
+                options: [
+                    { text: "1", correct: false },
+                    { text: "2", correct: true },
+                    { text: "0.5", correct: false },
+                    { text: "3", correct: false }
+                ],
+                explanation: "$\\text{NaCl}$ dissociates into two ions ($\\text{Na}^+$ and $\\text{Cl}^-$), so the Van't Hoff factor $i = 2$."
+            },
+            {
+                id: 7,
+                chapter: "Chemical Equilibrium",
+                question: "For the reaction $\\text{N}_2(g) + 3\\text{H}_2(g) \\rightleftharpoons 2\\text{NH}_3(g)$, the unit of equilibrium constant $K_c$ is:",
+                options: [
+                    { text: "\\text{mol}^{-2}\\,\\text{dm}^6", correct: true },
+                    { text: "\\text{mol}\\,\\text{dm}^{-3}", correct: false },
+                    { text: "\\text{mol}^2\\,\\text{dm}^{-6}", correct: false },
+                    { text: "\\text{dimensionless}", correct: false }
+                ],
+                explanation: "Unit of $K_c = (\\text{moldm}^{-3})^{\\Delta n}$. Here $\\Delta n = 2 - (1+3) = -2$, so unit is $\\text{mol}^{-2}\\,\\text{dm}^6$."
+            },
+            {
+                id: 8,
+                chapter: "Chemical Equilibrium",
+                question: "According to Le Chatelier's principle, an increase in pressure on a gaseous system with $\\Delta n > 0$ will shift equilibrium in which direction?",
+                options: [
+                    { text: "Forward direction", correct: false },
+                    { text: "Backward direction", correct: true },
+                    { text: "No effect", correct: false },
+                    { text: "Towards higher temperature", correct: false }
+                ],
+                explanation: "Increasing pressure shifts equilibrium towards the side with fewer moles of gas. Since $\\Delta n > 0$, reactants have fewer moles, so the backward reaction is favored."
+            },
+            {
+                id: 9,
+                chapter: "Chemical Equilibrium",
+                question: "The conjugate acid of $\\text{NH}_3$ is:",
+                options: [
+                    { text: "\\text{NH}_2^-", correct: false },
+                    { text: "\\text{NH}_4^+", correct: true },
+                    { text: "\\text{NO}_3^-", correct: false },
+                    { text: "\\text{N}_2", correct: false }
+                ],
+                explanation: "A conjugate acid is formed by accepting a proton ($\\text{H}^+$). $\\text{NH}_3 + \\text{H}^+ \\rightarrow \\text{NH}_4^+$."
+            },
+            {
+                id: 10,
+                chapter: "Thermodynamics",
+                question: "Which of the following is an intensive property?",
+                options: [
+                    { text: "Internal energy", correct: false },
+                    { text: "Enthalpy", correct: false },
+                    { text: "Temperature", correct: true },
+                    { text: "Volume", correct: false }
+                ],
+                explanation: "Intensive properties do not depend on the quantity of matter (e.g., temperature, density, pressure)."
+            },
+            {
+                id: 11,
+                chapter: "Thermodynamics",
+                question: "For an isothermal process in an ideal gas, the change in internal energy ($\\Delta U$) is:",
+                options: [
+                    { text: "Positive", correct: false },
+                    { text: "Negative", correct: false },
+                    { text: "Zero", correct: true },
+                    { text: "Equal to heat absorbed", correct: false }
+                ],
+                explanation: "In an isothermal process, temperature is constant. Since internal energy of an ideal gas depends only on temperature, $\\Delta U = 0$."
+            },
+            {
+                id: 12,
+                chapter: "Thermodynamics",
+                question: "The relation between enthalpy change ($\\Delta H$) and internal energy change ($\\Delta U$) for a gaseous reaction is:",
+                options: [
+                    { text: "\\Delta H = \\Delta U + \\Delta n RT", correct: true },
+                    { text: "\\Delta H = \\Delta U - \\Delta n RT", correct: false },
+                    { text: "\\Delta H = \\Delta U + P\\Delta V", correct: false },
+                    { text: "\\Delta H = \\Delta U", correct: false }
+                ],
+                explanation: "The standard thermodynamic relation is $\\Delta H = \\Delta U + \\Delta n_g RT$."
+            },
+            {
+                id: 13,
+                chapter: "Chemical Kinetics",
+                question: "The rate law for a reaction is given as $\\text{Rate} = k[A]^2[B]^1$. What is the overall order of the reaction?",
+                options: [
+                    { text: "1", correct: false },
+                    { text: "2", correct: false },
+                    { text: "3", correct: true },
+                    { text: "0", correct: false }
+                ],
+                explanation: "Overall order is the sum of the powers of concentration terms in the rate law: $2 + 1 = 3$."
+            },
+            {
+                id: 14,
+                chapter: "Chemical Kinetics",
+                question: "The half-life period ($t_{1/2}$) of a first-order reaction is:",
+                options: [
+                    { text: "Directly proportional to initial concentration", correct: false },
+                    { text: "Inversely proportional to initial concentration", correct: false },
+                    { text: "Independent of initial concentration", correct: true },
+                    { text: "Dependent on catalyst presence", correct: false }
+                ],
+                explanation: "For a first-order reaction, $t_{1/2} = \\frac{0.693}{k}$, which is completely independent of the initial concentration."
+            },
+            {
+                id: 15,
+                chapter: "Chemical Kinetics",
+                question: "A catalyst increases the rate of a chemical reaction by:",
+                options: [
+                    { text: "Decreasing the activation energy", correct: true },
+                    { text: "Increasing the activation energy", correct: false },
+                    { text: "Changing the enthalpy of the reaction", correct: false },
+                    { text: "Shifting the chemical equilibrium", correct: false }
+                ],
+                explanation: "Catalysts provide an alternative reaction pathway requiring lower activation energy, speeding up the reaction rate."
+            },
+            {
+                id: 16,
+                chapter: "Electrochemistry",
+                question: "The standard cell potential ($E^0_{\\text{cell}}$) for a galvanic cell is calculated as:",
+                options: [
+                    { text: "E^0_{\\text{cathode}} - E^0_{\\text{anode}}", correct: true },
+                    { text: "E^0_{\\text{anode}} - E^0_{\\text{cathode}}", correct: false },
+                    { text: "E^0_{\\text{oxidation}} - E^0_{\\text{reduction}}", correct: false },
+                    { text: "E^0_{\\text{left}} - E^0_{\\text{right}}", correct: false }
+                ],
+                explanation: "$E^0_{\\text{cell}} = E^0_{\\text{right (cathode)}} - E^0_{\\text{left (anode)}}$ using standard reduction potentials."
+            },
+            {
+                id: 17,
+                chapter: "Electrochemistry",
+                question: "According to Faraday's first law of electrolysis, the mass of substance deposited ($m$) is proportional to:",
+                options: [
+                    { text: "Time ($t$)", correct: false },
+                    { text: "Current ($I$)", correct: false },
+                    { text: "Quantity of electricity passed ($Q$)", correct: true },
+                    { text: "Resistance ($R$)", correct: false }
+                ],
+                explanation: "Faraday's first law states $m = ZQ = ZIt$, where $Q$ is the quantity of electricity passed."
+            },
+            {
+                id: 18,
+                chapter: "Electrochemistry",
+                question: "Molar conductivity of an electrolyte solution generally _______ with decrease in concentration (increase in dilution).",
+                options: [
+                    { text: "Increases", correct: true },
+                    { text: "Decreases", correct: false },
+                    { text: "Remains constant", correct: false },
+                    { text: "Becomes zero", correct: false }
+                ],
+                explanation: "Molar conductivity increases upon dilution because total volume containing 1 mole of electrolyte increases, reducing ionic interactions."
+            },
+            {
+                id: 19,
+                chapter: "Transition Element",
+                question: "Which of the following transition elements shows a maximum number of oxidation states?",
+                options: [
+                    { text: "Sc", correct: false },
+                    { text: "Mn", correct: true },
+                    { text: "Fe", correct: false },
+                    { text: "Zn", correct: false }
+                ],
+                explanation: "Manganese (Mn, atomic number 25) shows oxidation states from $+2$ to $+7$ due to the availability of all 5 $d$-electrons and 2 $s$-electrons."
+            },
+            {
+                id: 20,
+                chapter: "Transition Element",
+                question: "Transition metal ions are generally colored due to:",
+                options: [
+                    { text: "s-p transition", correct: false },
+                    { text: "d-d electronic transition", correct: true },
+                    { text: "Radioactivity", correct: false },
+                    { text: "High density", correct: false }
+                ],
+                explanation: "Unpaired $d$-electrons undergo $d-d$ transitions by absorbing visible light, imparting characteristic colors to transition metal ions."
+            },
+            {
+                id: 21,
+                chapter: "Transition Element",
+                question: "Which of the following ions is diamagnetic?",
+                options: [
+                    { text: "\\text{Sc}^{3+}", correct: true },
+                    { text: "\\text{Ti}^{3+}", correct: false },
+                    { text: "\\text{V}^{3+}", correct: false },
+                    { text: "\\text{Mn}^{2+}", correct: false }
+                ],
+                explanation: "$\\text{Sc}^{3+}$ has a $3d^0$ configuration with no unpaired electrons, making it diamagnetic. Others have unpaired $d$-electrons."
+            },
+            {
+                id: 22,
+                chapter: "Transition Element",
+                question: "The alloy brass contains copper and:",
+                options: [
+                    { text: "Tin", correct: false },
+                    { text: "Zinc", correct: true },
+                    { text: "Nickel", correct: false },
+                    { text: "Iron", correct: false }
+                ],
+                explanation: "Brass is an alloy of copper ($\\text{Cu}$) and zinc ($\\text{Zn}$)."
+            },
+            {
+                id: 23,
+                chapter: "Halogen Derivatives",
+                question: "The IUPAC name of $\\text{CH}_3\\text{CH}(\\text{Cl})\\text{CH}_3$ is:",
+                options: [
+                    { text: "1-Chloropropane", correct: false },
+                    { text: "2-Chloropropane", correct: true },
+                    { text: "Propyl chloride", correct: false },
+                    { text: "Isopropyl chloride", correct: false }
+                ],
+                    explanation: "The longest chain has 3 carbons with chlorine attached to carbon-2, giving 2-chloropropane."
+            },
+            {
+                id: 24,
+                chapter: "Halogen Derivatives",
+                question: "Alkyl halides react with aqueous potassium hydroxide ($\\text{KOH}$) to give:",
+                options: [
+                    { text: "Alkenes", correct: false },
+                    { text: "Alcohols", correct: true },
+                    { text: "Ethers", correct: false },
+                    { text: "Aldehydes", correct: false }
+                ],
+                explanation: "Aqueous $\\text{KOH}$ brings about nucleophilic substitution, converting alkyl halides into alcohols."
+            },
+            {
+                id: 25,
+                chapter: "Halogen Derivatives",
+                question: "Which of the following alkyl halides undergoes $\\text{S}_N1$ reaction most readily?",
+                options: [
+                    { text: "\\text{CH}_3\\text{Cl}", correct: false },
+                    { text: "\\text{CH}_3\\text{CH}_2\\text{Cl}", correct: false },
+                    { text: "(\\text{CH}_3)_2\\text{CHCl}", correct: false },
+                    { text: "(\\text{CH}_3)_3\\text{CCl}", correct: true }
+                ],
+                explanation: "$\\text{S}_N1$ reactions proceed via carbocation intermediates. Tertiary alkyl halides form stable tertiary carbocations."
+            },
+            {
+                id: 26,
+                chapter: "Halogen Derivatives",
+                question: "Finkelstein reaction is used to prepare:",
+                options: [
+                    { text: "Alkyl fluorides", correct: false },
+                    { text: "Alkyl chlorides", correct: false },
+                    { text: "Alkyl iodides", correct: true },
+                    { text: "Alkyl bromides", correct: false }
+                ],
+                explanation: "Finkelstein reaction involves halogen exchange using sodium iodide in acetone to prepare alkyl iodides."
+            },
+            {
+                id: 27,
+                chapter: "Solid State",
+                question: "Frenkel defect is commonly shown by ionic compounds in which:",
+                options: [
+                    { text: "Cations and anions are of similar size", correct: false },
+                    { text: "There is a large difference in size between cations and anions", correct: true },
+                    { text: "Density changes significantly", correct: false },
+                    { text: "Electrons are trapped in lattice sites", correct: false }
+                ],
+                explanation: "Frenkel defect occurs when smaller ions (usually cations) occupy interstitial sites, typical in compounds with low coordination numbers and size disparity."
+            },
+            {
+                id: 28,
+                chapter: "Solution",
+                question: "Osmosis involves the movement of solvent molecules through a semipermeable membrane from:",
+                options: [
+                    { text: "Higher concentration to lower concentration", correct: false },
+                    { text: "Lower solvent concentration to higher solvent concentration", correct: false },
+                    { text: "Low solute concentration (higher solvent) to high solute concentration", correct: true },
+                    { text: "High pressure to low pressure zone", correct: false }
+                ],
+                explanation: "Solvent molecules flow from a solution of lower solute concentration to higher solute concentration to equalize concentrations."
+            },
+            {
+                id: 29,
+                chapter: "Chemical Kinetics",
+                question: "The unit of rate constant for a zero-order reaction is:",
+                options: [
+                    { text: "\\text{s}^{-1}", correct: false },
+                    { text: "\\text{mol}\\,\\text{dm}^{-3}\\,\\text{s}^{-1}", correct: true },
+                    { text: "\\text{dm}^3\\,\\text{mol}^{-1}\\,\\text{s}^{-1}", correct: false },
+                    { text: "\\text{mol}^{-2}\\,\\text{dm}^6\\,\\text{s}^{-1}", correct: false }
+                ],
+                explanation: "For a zero-order reaction, rate = $k[A]^0 = k$, so units of $k$ are the same as rate: $\\text{mol}\\,\\text{dm}^{-3}\\,\\text{s}^{-1}$."
+            },
+            {
+                id: 30,
+                chapter: "Halogen Derivatives",
+                question: "Chloroform when exposed to air and sunlight slowly forms a poisonous gas known as:",
+                options: [
+                    { text: "Phosgene", correct: true },
+                    { text: "Mustard gas", correct: false },
+                    { text: "Tear gas", correct: false },
+                    { text: "Laughing gas", correct: false }
+                ],
+                explanation: "Chloroform oxidizes in the presence of air and light to form carbonyl chloride ($\\text{COCl}_2$), commonly called phosgene."
+            }
+        ];
+
+        const setupScreen = document.getElementById('setup-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const studentForm = document.getElementById('student-form');
+        const quizForm = document.getElementById('quiz-form');
+        const questionsContainer = document.getElementById('questions-container');
+        const answerKeyContainer = document.getElementById('answer-key-container');
+
+        let studentInfo = { name: '', roll: '' };
+
+        // Render Questions
+        function renderQuestions() {
+            questionsContainer.innerHTML = '';
+            questionsData.forEach((q, index) => {
+                let optionsHtml = '';
+                // Shuffle options visually or keep ordered; here we render them clearly
+                q.options.forEach((opt, optIdx) => {
+                    optionsHtml += `
+                        <label class="flex items-center space-x-3 p-3 border rounded-lg hover:bg-slate-50 cursor-pointer transition-colors">
+                            <input type="radio" name="q${q.id}" value="${optIdx}" required class="text-indigo-600 focus:ring-indigo-500">
+                            <span class="text-slate-700">${opt.text}</span>
+                        </label>
+                    `;
+                });
+
+                questionsContainer.innerHTML += `
+                    <div class="bg-white rounded-xl shadow-md p-6 space-y-4">
+                        <div class="flex justify-between items-center text-xs font-semibold text-indigo-600 uppercase tracking-wider">
+                            <span>Question ${index + 1} of 30</span>
+                            <span class="bg-indigo-50 px-2.5 py-1 rounded-full">${q.chapter}</span>
+                        </div>
+                        <p class="text-base font-medium text-slate-800">${q.question}</p>
+                        <div class="space-y-2">
+                            ${optionsHtml}
+                        </div>
+                    </div>
+                `;
+            });
+            if (window.MathJax) {
+                window.MathJax.typeset();
+            }
+        }
+
+        studentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            studentInfo.name = document.getElementById('student-name').value.trim();
+            studentInfo.roll = document.getElementById('student-roll').value.trim();
+
+            document.getElementById('display-name').textContent = studentInfo.name;
+            document.getElementById('display-roll').textContent = studentInfo.roll;
+
+            setupScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            renderQuestions();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        quizForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let score = 0;
+            let answerKeyHtml = '';
+
+            questionsData.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="q${q.id}"]:checked`);
+                const selectedVal = selectedOption ? parseInt(selectedOption.value) : -1;
+                const correctOptObj = q.options.find(o => o.correct);
+                const correctIdx = q.options.indexOf(correctOptObj);
+                const isCorrect = selectedVal === correctIdx;
+
+                if (isCorrect) score++;
+
+                const userAnsText = selectedVal !== -1 ? q.options[selectedVal].text : "Not Attempted";
+                const badgeClass = isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800';
+                const badgeText = isCorrect ? 'Correct' : 'Incorrect';
+
+                answerKeyHtml += `
+                    <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-2">
+                        <div class="flex justify-between items-start">
+                            <span class="text-sm font-semibold text-slate-700">Q${index + 1}. ${q.question}</span>
+                            <span class="text-xs px-2.5 py-1 rounded-full font-medium ${badgeClass}">${badgeText}</span>
+                        </div>
+                        <div class="text-sm text-slate-600">
+                            <p><strong>Your Answer:</strong> ${userAnsText}</p>
+                            <p><strong>Correct Answer:</strong> ${correctOptObj.text}</p>
+                        </div>
+                        <div class="bg-white p-3 rounded border border-slate-100 text-xs text-slate-700 mt-2">
+                            <strong>Explanation:</strong> ${q.explanation}
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('score-display').textContent = `${score} / 30`;
+            answerKeyContainer.innerHTML = answerKeyHtml;
+
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (window.MathJax) {
+                window.MathJax.typeset();
+            }
+        });
+    </script>
+</body>
+</html>
+```eof
